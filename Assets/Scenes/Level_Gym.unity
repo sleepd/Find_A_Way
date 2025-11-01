@@ -194,6 +194,7 @@ MonoBehaviour:
   _drag: 30
   _acceleration: 50
   _maxSpeed: 5
+  _rotationSpeed: 720
 --- !u!1 &125504602
 GameObject:
   m_ObjectHideFlags: 0

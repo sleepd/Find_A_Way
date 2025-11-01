@@ -26,6 +26,11 @@ public sealed class PlayerInput : IDisposable
     /// </summary>
     public Vector3 MoveDirection => new Vector3(MoveInput.x, 0f, MoveInput.y);
 
+    /// <summary>
+    /// Current pointing position on the screen (e.g., mouse or gamepad cursor).
+    /// </summary>
+    public Vector2 PointerPosition => _inputActions.Player.Look.ReadValue<Vector2>();
+
     public void Enable()
     {
         _inputActions.Player.Enable();
