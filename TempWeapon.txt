@@ -1,0 +1,89 @@
+using UnityEngine;
+
+public class Weapon : MonoBehaviour, IWeapon
+{
+    [SerializeField] WeaponData _weaponData;
+    [SerializeField] Transform _firePoint;
+    [SerializeField] BulletPool _bulletPool;
+    private WeaponModel _model;
+    public bool IsFiring { get; private set; }
+
+    void Awake()
+    {
+        _model = new(_weaponData);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        _model.Tick(Time.deltaTime);
+
+        if(IsFiring)
+        {
+            if(_model.TryFire())
+            {
+                Fire();
+            }
+        }
+    }
+
+    public void Use()
+    {
+
+    }
+
+    public void BeginFire()
+    {
+        IsFiring = true;
+    }
+
+    public void EndFire()
+    {
+        IsFiring = false;
+    }
+    
+    void Fire()
+    {
+        var pool = _bulletPool != null ? _bulletPool : BulletPool.Instance;
+        if (pool == null)
+        {
+            Debug.LogWarning("Attempted to fire weapon but no BulletPool is available.", this);
+            return;
+        }
+
+        if (_firePoint == null)
+        {
+            Debug.LogWarning("Weapon has no fire point assigned.", this);
+            return;
+        }
+
+        var spawnPosition = _firePoint.position;
+        var direction = _firePoint.forward;
+
+        var maxRange = _model.MaxRange;
+        var rayDistance = maxRange > 0f ? maxRange : Mathf.Infinity;
+        var ray = new Ray(spawnPosition, direction);
+        Vector3 targetPosition;
+
+        if (Physics.Raycast(ray, out var hitInfo, rayDistance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+        {
+            targetPosition = hitInfo.point;
+        }
+        else
+        {
+            var fallbackDistance = maxRange > 0f ? maxRange : 1000f;
+            targetPosition = spawnPosition + direction * fallbackDistance;
+        }
+
+        var bulletsPerShot = Mathf.Max(1, _model.Data.bulletsPerShot);
+        var bulletSpeed = _model.BulletSpeed;
+
+        for (var i = 0; i < bulletsPerShot; i++)
+        {
+            var bullet = pool.Get();
+            bullet.Initialize(spawnPosition, targetPosition, bulletSpeed);
+        }
+    }
+    
+}
+

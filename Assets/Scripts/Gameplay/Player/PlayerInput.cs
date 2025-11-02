@@ -8,11 +8,16 @@ using UnityEngine.InputSystem;
 /// </summary>
 public sealed class PlayerInput : IDisposable
 {
+    public event Action FireStarted;
+    public event Action FireCanceled;
+    public bool IsFiring { get; private set; }
     private readonly InputSystem_Actions _inputActions;
 
     public PlayerInput()
     {
         _inputActions = new InputSystem_Actions();
+         _inputActions.Player.Attack.performed += OnFirePerformed;
+        _inputActions.Player.Attack.canceled += OnFireCanceled;
         Enable();
     }
 
@@ -31,6 +36,18 @@ public sealed class PlayerInput : IDisposable
     /// </summary>
     public Vector2 PointerPosition => _inputActions.Player.Look.ReadValue<Vector2>();
 
+    void OnFirePerformed(InputAction.CallbackContext ctx)
+    {
+        IsFiring = true;
+        FireStarted?.Invoke();
+    }
+
+    void OnFireCanceled(InputAction.CallbackContext ctx)
+    {
+        IsFiring = false;
+        FireCanceled?.Invoke();
+    }
+
     public void Enable()
     {
         _inputActions.Player.Enable();
@@ -44,6 +61,8 @@ public sealed class PlayerInput : IDisposable
     public void Dispose()
     {
         Disable();
+        _inputActions.Player.Attack.performed -= OnFirePerformed;
+        _inputActions.Player.Attack.canceled -= OnFireCanceled;
         _inputActions.Dispose();
     }
 }

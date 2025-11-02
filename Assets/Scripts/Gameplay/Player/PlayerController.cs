@@ -12,9 +12,10 @@ public class PlayerController : MonoBehaviour
     [Header("Aim")]
     [SerializeField, Tooltip("Degrees per second the player can rotate toward the aim target.")]
     private float _rotationSpeed = 360f;
-    PlayerMovement _playerMovement;
-    PlayerInput _playerInput;
-    PlayerAimer _playerAimer;
+    private PlayerMovement _playerMovement;
+    private PlayerInput _playerInput;
+    private PlayerAimer _playerAimer;
+    [SerializeField] private Weapon _currentWeapon;
 
     void Awake()
     {
@@ -22,6 +23,12 @@ public class PlayerController : MonoBehaviour
         _playerMovement = new(characterController, _acceleration, _maxSpeed, _drag);
         _playerAimer = new(transform, Camera.main, _rotationSpeed);
         _playerInput = new();
+        EquipWeapon();
+    }
+
+    void EquipWeapon()
+    {
+        _currentWeapon.SetPlayer(this);
     }
 
     void Update()
@@ -30,8 +37,19 @@ public class PlayerController : MonoBehaviour
         _playerAimer.AimAtScreenPosition(_playerInput.PointerPosition);
     }
 
+    void OnEnable()
+    {
+        _playerInput.FireStarted += HandleFireStarted;
+        _playerInput.FireCanceled += HandleFireCanceled;
+    }
+
     void OnDisable()
     {
+        _playerInput.FireStarted -= HandleFireStarted;
+        _playerInput.FireCanceled -= HandleFireCanceled;
         _playerInput.Dispose();
     }
+
+    void HandleFireStarted() => _currentWeapon.BeginFire();
+    void HandleFireCanceled() => _currentWeapon.EndFire();
 }
