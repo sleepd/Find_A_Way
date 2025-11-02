@@ -42,15 +42,19 @@ public class PlayerController : MonoBehaviour
     {
         _playerInput.FireStarted += HandleFireStarted;
         _playerInput.FireCanceled += HandleFireCanceled;
+        _playerInput.ReloadTriggered += HandleReload;
+
     }
 
     void OnDisable()
     {
         _playerInput.FireStarted -= HandleFireStarted;
         _playerInput.FireCanceled -= HandleFireCanceled;
+        _playerInput.ReloadTriggered -= HandleReload;
         _playerInput.Dispose();
     }
 
     void HandleFireStarted() => _currentWeapon.BeginFire();
     void HandleFireCanceled() => _currentWeapon.EndFire();
+    void HandleReload() => _currentWeapon.Reload();
 }

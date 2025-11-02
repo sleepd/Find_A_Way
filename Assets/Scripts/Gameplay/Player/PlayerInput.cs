@@ -10,14 +10,16 @@ public sealed class PlayerInput : IDisposable
 {
     public event Action FireStarted;
     public event Action FireCanceled;
+    public event Action ReloadTriggered;
     public bool IsFiring { get; private set; }
     private readonly InputSystem_Actions _inputActions;
 
     public PlayerInput()
     {
         _inputActions = new InputSystem_Actions();
-         _inputActions.Player.Attack.performed += OnFirePerformed;
+        _inputActions.Player.Attack.performed += OnFirePerformed;
         _inputActions.Player.Attack.canceled += OnFireCanceled;
+        _inputActions.Player.Reload.performed += OnReloadPerformed;
         Enable();
     }
 
@@ -48,6 +50,11 @@ public sealed class PlayerInput : IDisposable
         FireCanceled?.Invoke();
     }
 
+    void OnReloadPerformed(InputAction.CallbackContext ctx)
+    {
+        ReloadTriggered?.Invoke();
+    }
+
     public void Enable()
     {
         _inputActions.Player.Enable();
@@ -63,6 +70,7 @@ public sealed class PlayerInput : IDisposable
         Disable();
         _inputActions.Player.Attack.performed -= OnFirePerformed;
         _inputActions.Player.Attack.canceled -= OnFireCanceled;
+        _inputActions.Player.Reload.performed -= OnReloadPerformed;
         _inputActions.Dispose();
     }
 }

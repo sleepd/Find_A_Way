@@ -8,7 +8,9 @@ public class Weapon : MonoBehaviour, IWeapon
     [Header("Audio")]
     [SerializeField] AudioSource _audioSource;
     [SerializeField] AudioClip _fireClip;
+    [SerializeField] AudioClip _reloadClip;
     [SerializeField, Range(0f, 1f)] float _fireVolume = 1f;
+    [SerializeField, Range(0f, 1f)] float _reloadVolume = 1f;
     public WeaponModel Model { get; private set; }
     public bool IsFiring { get; private set; }
     private PlayerController _playerController;
@@ -45,6 +47,27 @@ public class Weapon : MonoBehaviour, IWeapon
     public void EndFire()
     {
         IsFiring = false;
+    }
+
+    public void Reload()
+    {
+        if (Model == null)
+        {
+            return;
+        }
+
+        var ammoBefore = Model.CurrentAmmo;
+        var wasReloading = Model.IsReloading;
+
+        Model.StartReload();
+
+        var startedReload = Model.IsReloading && !wasReloading;
+        var ammoIncreased = Model.CurrentAmmo > ammoBefore;
+
+        if (startedReload || ammoIncreased)
+        {
+            PlayReloadSound();
+        }
     }
     
     public void Use()
@@ -123,5 +146,22 @@ public class Weapon : MonoBehaviour, IWeapon
         var randomYaw = Random.Range(-spreadAngle * 0.5f, spreadAngle * 0.5f);
         var rotation = Quaternion.Euler(0f, randomYaw, 0f);
         return (rotation * direction).normalized;
+    }
+
+    private void PlayReloadSound()
+    {
+        if (_reloadClip == null)
+        {
+            return;
+        }
+
+        if (_audioSource != null)
+        {
+            _audioSource.PlayOneShot(_reloadClip, _reloadVolume);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(_reloadClip, _firePoint != null ? _firePoint.position : transform.position, _reloadVolume);
+        }
     }
 }

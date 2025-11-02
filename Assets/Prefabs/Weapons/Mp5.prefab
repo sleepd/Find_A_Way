@@ -83,7 +83,9 @@ MonoBehaviour:
   _bulletPool: {fileID: 0}
   _audioSource: {fileID: 886935189279599921}
   _fireClip: {fileID: 8300000, guid: 9b073da8e222c0a4ea88c0f8658f9187, type: 3}
+  _reloadClip: {fileID: 8300000, guid: ede4e369b1bfa2c4ca0ba79d69330b9f, type: 3}
   _fireVolume: 1
+  _reloadVolume: 1
 --- !u!82 &886935189279599921
 AudioSource:
   m_ObjectHideFlags: 0
