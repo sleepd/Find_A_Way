@@ -89,8 +89,7 @@ public class WeaponModel
             return false;
         }
 
-        var bulletsToConsume = Mathf.Max(1, Data.bulletsPerShot);
-        CurrentAmmo = Mathf.Max(0, CurrentAmmo - bulletsToConsume);
+        CurrentAmmo = Mathf.Max(0, CurrentAmmo - 1);
         FireCooldown = FireInterval;
         AmmoChanged?.Invoke(CurrentAmmo, Data.magazineSize);
 

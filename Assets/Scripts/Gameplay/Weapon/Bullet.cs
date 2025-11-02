@@ -13,8 +13,18 @@ public class Bullet : MonoBehaviour, IPoolable<Bullet>
     private bool _hasTarget;
     private bool _isDespawning;
     private float _despawnTimer;
+    private IDamageable _damageableTarget;
+    private int _damageAmount;
+    private bool _damageApplied;
+    private Collider _hitCollider;
 
-    public void Initialize(Vector3 spawnPosition, Vector3 targetPosition, float speed)
+    public void Initialize(
+        Vector3 spawnPosition,
+        Vector3 targetPosition,
+        float speed,
+        int damage,
+        IDamageable damageableTarget,
+        Collider hitCollider)
     {
         transform.position = spawnPosition;
         _targetPos = targetPosition;
@@ -22,6 +32,10 @@ public class Bullet : MonoBehaviour, IPoolable<Bullet>
         _hasTarget = true;
         _isDespawning = false;
         _despawnTimer = 0f;
+        _damageableTarget = damageableTarget;
+        _damageAmount = Mathf.Max(0, damage);
+        _damageApplied = false;
+        _hitCollider = hitCollider;
     }
 
     public void OnReturnedToPool()
@@ -30,6 +44,10 @@ public class Bullet : MonoBehaviour, IPoolable<Bullet>
         _speed = 0f;
         _isDespawning = false;
         _despawnTimer = 0f;
+        _damageableTarget = null;
+        _damageAmount = 0;
+        _damageApplied = false;
+        _hitCollider = null;
         gameObject.SetActive(false);
     }
 
@@ -101,8 +119,44 @@ public class Bullet : MonoBehaviour, IPoolable<Bullet>
 
     private void BeginDespawnCountdown()
     {
+        ApplyPendingDamage();
         _hasTarget = false;
         _isDespawning = true;
         _despawnTimer = Mathf.Max(0f, _despawnDelay);
+    }
+
+    private void ApplyPendingDamage()
+    {
+        if (_damageApplied)
+        {
+            return;
+        }
+
+        if (_damageAmount > 0)
+        {
+            if (_damageableTarget == null && _hitCollider != null)
+            {
+                _damageableTarget = FindDamageableFromCollider(_hitCollider);
+            }
+
+            _damageableTarget?.ApplyDamage(_damageAmount);
+        }
+
+        _damageApplied = true;
+    }
+
+    private static IDamageable FindDamageableFromCollider(Collider source)
+    {
+        if (source == null)
+        {
+            return null;
+        }
+
+        if (source.TryGetComponent<DamageReceiver>(out var receiver) && receiver.TryGetDamageable(out var viaReceiver))
+        {
+            return viaReceiver;
+        }
+
+        return source.GetComponentInParent<IDamageable>();
     }
 }

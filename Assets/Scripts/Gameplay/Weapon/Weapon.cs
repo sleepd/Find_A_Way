@@ -97,16 +97,23 @@ public class Weapon : MonoBehaviour, IWeapon
         var spreadAngle = Mathf.Max(0f, Model.Data.spreadAngle);
         var maxRange = Model.MaxRange;
 
+        var damagePerBullet = Mathf.Max(0, Mathf.RoundToInt(Model.Data.damage));
+
         for (var i = 0; i < bulletsPerShot; i++)
         {
             var spreadDirection = ApplySpread(direction, spreadAngle);
             var maxDistance = maxRange > 0f ? maxRange : Mathf.Infinity;
             var ray = new Ray(rayOrigin, spreadDirection);
             Vector3 targetPosition;
+            IDamageable damageableTarget = null;
 
-            if (Physics.Raycast(ray, out var hitInfo, maxDistance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            Collider damageCollider = null;
+
+            if (Physics.Raycast(ray, out var hitInfo, maxDistance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
+                damageCollider = hitInfo.collider;
                 targetPosition = hitInfo.point;
+                damageableTarget = FindDamageableOnHit(damageCollider);
             }
             else
             {
@@ -115,8 +122,29 @@ public class Weapon : MonoBehaviour, IWeapon
             }
 
             var bullet = pool.Get();
-            bullet.Initialize(spawnPosition, targetPosition, bulletSpeed);
+            bullet.Initialize(
+                spawnPosition,
+                targetPosition,
+                bulletSpeed,
+                damagePerBullet,
+                damageableTarget,
+                damageCollider);
         }
+    }
+
+    private static IDamageable FindDamageableOnHit(Collider hitCollider)
+    {
+        if (hitCollider == null)
+        {
+            return null;
+        }
+
+        if (hitCollider.TryGetComponent<DamageReceiver>(out var receiver) && receiver.TryGetDamageable(out var viaReceiver))
+        {
+            return viaReceiver;
+        }
+
+        return hitCollider.GetComponentInParent<IDamageable>();
     }
 
     private void PlayFireSound()
