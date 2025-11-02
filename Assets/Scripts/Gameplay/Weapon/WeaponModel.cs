@@ -15,6 +15,7 @@ public class WeaponModel
         CurrentAmmo = Mathf.Max(0, Data.magazineSize);
         FireCooldown = 0f;
         reloadTimer = 0f;
+        AmmoChanged?.Invoke(CurrentAmmo, Data.magazineSize);
     }
 
     public WeaponData Data { get; }
@@ -32,6 +33,7 @@ public class WeaponModel
     public float BulletSpeed => Mathf.Max(0f, Data.bulletSpeed);
     public float MaxRange => Mathf.Max(0f, Data.maxRange);
     public float ProjectileLifetime => BulletSpeed > 0f ? MaxRange / BulletSpeed : 0f;
+    public event System.Action<int, int> AmmoChanged;
 
     public bool CanFire =>
         !IsReloading &&
@@ -44,6 +46,7 @@ public class WeaponModel
         FireCooldown = 0f;
         reloadTimer = 0f;
         IsReloading = false;
+        AmmoChanged?.Invoke(CurrentAmmo, Data.magazineSize);
     }
 
     /// <summary>
@@ -76,6 +79,7 @@ public class WeaponModel
         var bulletsToConsume = Mathf.Max(1, Data.bulletsPerShot);
         CurrentAmmo = Mathf.Max(0, CurrentAmmo - bulletsToConsume);
         FireCooldown = FireInterval;
+        AmmoChanged?.Invoke(CurrentAmmo, Data.magazineSize);
 
         return true;
     }
@@ -117,9 +121,11 @@ public class WeaponModel
         {
             case ReloadMode.Magazine:
                 CurrentAmmo = Mathf.Max(0, Data.magazineSize);
+                AmmoChanged?.Invoke(CurrentAmmo, Data.magazineSize);
                 break;
             case ReloadMode.PerBullet:
                 CurrentAmmo = Mathf.Min(Data.magazineSize, CurrentAmmo + 1);
+                AmmoChanged?.Invoke(CurrentAmmo, Data.magazineSize);
                 if (CurrentAmmo < Data.magazineSize)
                 {
                     // Continue the per-bullet reload loop automatically until full.
@@ -127,5 +133,10 @@ public class WeaponModel
                 }
                 break;
         }
+    }
+
+    public void AmmoState()
+    {
+        AmmoChanged?.Invoke(CurrentAmmo, Data.magazineSize);
     }
 }

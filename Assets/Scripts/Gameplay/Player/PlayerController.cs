@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput _playerInput;
     private PlayerAimer _playerAimer;
     [SerializeField] private Weapon _currentWeapon;
+    public Weapon CurrentWeapon => _currentWeapon;
 
     void Awake()
     {

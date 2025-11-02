@@ -9,13 +9,13 @@ public class Weapon : MonoBehaviour, IWeapon
     [SerializeField] AudioSource _audioSource;
     [SerializeField] AudioClip _fireClip;
     [SerializeField, Range(0f, 1f)] float _fireVolume = 1f;
-    private WeaponModel _model;
+    public WeaponModel Model { get; private set; }
     public bool IsFiring { get; private set; }
     private PlayerController _playerController;
 
     void Awake()
     {
-        _model = new(_weaponData);
+        Model = new(_weaponData);
     }
 
     public void SetPlayer(PlayerController playerController)
@@ -26,11 +26,11 @@ public class Weapon : MonoBehaviour, IWeapon
     // Update is called once per frame
     void Update()
     {
-        _model.Tick(Time.deltaTime);
+        Model.Tick(Time.deltaTime);
 
         if(IsFiring)
         {
-            if(_model.TryFire())
+            if(Model.TryFire())
             {
                 Use();
             }
@@ -69,10 +69,10 @@ public class Weapon : MonoBehaviour, IWeapon
         var playerPosition = _playerController.transform.position;
         var rayOrigin = new Vector3(playerPosition.x, spawnPosition.y, playerPosition.z);
 
-        var bulletsPerShot = Mathf.Max(1, _model.Data.bulletsPerShot);
-        var bulletSpeed = _model.BulletSpeed;
-        var spreadAngle = Mathf.Max(0f, _model.Data.spreadAngle);
-        var maxRange = _model.MaxRange;
+        var bulletsPerShot = Mathf.Max(1, Model.Data.bulletsPerShot);
+        var bulletSpeed = Model.BulletSpeed;
+        var spreadAngle = Mathf.Max(0f, Model.Data.spreadAngle);
+        var maxRange = Model.MaxRange;
 
         for (var i = 0; i < bulletsPerShot; i++)
         {
