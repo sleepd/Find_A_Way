@@ -43,6 +43,10 @@ public class PlayerController : MonoBehaviour
     {
         playerMovement.Move(playerInput.MoveDirection);
         playerAimer.AimAtScreenPosition(playerInput.PointerPosition);
+        if (currentWeapon != null)
+        {
+            currentWeapon.AimAtScreenPosition(playerInput.PointerPosition);
+        }
     }
 
     void OnEnable()
