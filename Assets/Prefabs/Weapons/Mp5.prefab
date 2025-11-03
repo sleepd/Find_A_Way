@@ -86,6 +86,8 @@ MonoBehaviour:
   _reloadClip: {fileID: 8300000, guid: ede4e369b1bfa2c4ca0ba79d69330b9f, type: 3}
   _fireVolume: 1
   _reloadVolume: 1
+  _aimRotationSpeed: 360
+  _minAimDistance: 2
 --- !u!82 &886935189279599921
 AudioSource:
   m_ObjectHideFlags: 0

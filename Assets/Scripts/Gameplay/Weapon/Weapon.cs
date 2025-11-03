@@ -20,19 +20,74 @@ public class Weapon : MonoBehaviour, IWeapon
     private PlayerController _playerController;
     private Camera _camera;
 
-    void Awake()
-    {
-        Model = new(_weaponData);
-        _camera = Camera.main;
-    }
-
     void OnEnable()
     {
         if (_camera == null)
         {
             _camera = Camera.main;
         }
+
+        if (Model != null)
+        {
+            SubscribeModelEvents(Model);
+        }
     }
+
+    void Awake()
+    {
+        Model = new(_weaponData);
+        _camera = Camera.main;
+        SubscribeModelEvents(Model);
+    }
+
+#region Model Event Subscription
+    void OnDisable()
+    {
+        if (Model != null)
+        {
+            UnsubscribeModelEvents(Model);
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (Model != null)
+        {
+            UnsubscribeModelEvents(Model);
+        }
+    }
+
+    void SubscribeModelEvents(WeaponModel model)
+    {
+        if (model == null)
+        {
+            return;
+        }
+
+        model.ReloadStarted += HandleReloadStarted;
+        model.ReloadStepFilled += HandleReloadStepFilled;
+        model.ReloadCompleted += HandleReloadCompleted;
+        model.ReloadCanceled += HandleReloadCanceled;
+    }
+
+    void UnsubscribeModelEvents(WeaponModel model)
+    {
+        if (model == null)
+        {
+            return;
+        }
+
+        model.ReloadStarted -= HandleReloadStarted;
+        model.ReloadStepFilled -= HandleReloadStepFilled;
+        model.ReloadCompleted -= HandleReloadCompleted;
+        model.ReloadCanceled -= HandleReloadCanceled;
+    }
+#endregion
+
+    void HandleReloadStarted() => PlayReloadSound();
+    void HandleReloadStepFilled(int current, int max) { }
+    void HandleReloadCompleted() { }
+    void HandleReloadCanceled() { }
 
     public void SetPlayer(PlayerController playerController)
     {
@@ -122,18 +177,7 @@ public class Weapon : MonoBehaviour, IWeapon
             return;
         }
 
-        var ammoBefore = Model.CurrentAmmo;
-        var wasReloading = Model.IsReloading;
-
         Model.StartReload();
-
-        var startedReload = Model.IsReloading && !wasReloading;
-        var ammoIncreased = Model.CurrentAmmo > ammoBefore;
-
-        if (startedReload || ammoIncreased)
-        {
-            PlayReloadSound();
-        }
     }
     
     public void Use()

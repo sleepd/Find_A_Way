@@ -20,7 +20,7 @@ MonoBehaviour:
   damage: 5
   criticalChance: 0
   criticalMultiplier: 0
-  spreadAngle: 5
+  spreadAngle: 10
   recoil: 0
   reloadTime: 3
   reloadMode: 1

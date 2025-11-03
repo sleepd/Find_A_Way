@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: WeaponItem_MP5
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponItemData
+  id: weapon.mo5
+  displayName: HK MP5
+  icon: {fileID: 0}
+  maxStack: 1
+  weaponPrefab: {fileID: 7953511408355203298, guid: 7be4685a6afafb043beaf79ede4a9709, type: 3}

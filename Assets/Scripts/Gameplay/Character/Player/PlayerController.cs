@@ -16,13 +16,24 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Tooltip("Max health point")]
     private int maxHealth;
 
-   
+    #region components
     private PlayerMovement playerMovement;
     private PlayerInput playerInput;
     private PlayerAimer playerAimer;
     public CharacterHealth Health { get; private set; }
+    public InventoryManager Inventory { get; private set; }
+    public WeaponController WeaponLoadoutController { get; private set; }
+    private InteractionSensor interactionSensor;
+    #endregion
+
     [SerializeField] private Weapon currentWeapon; // temporary hard code here
     public Weapon CurrentWeapon => currentWeapon;
+    [Header("Interaction")]
+    [SerializeField] private LayerMask interactableMask = ~0;
+    [SerializeField, Min(0.5f)] private float interactionScanRadius = 3f;
+
+    public IInteractable CurrentInteractable => interactionSensor?.Current;
+    public InteractionSensor InteractionSensor => interactionSensor;
 
     void Awake()
     {
@@ -31,6 +42,8 @@ public class PlayerController : MonoBehaviour
         playerAimer = new(transform, Camera.main, rotationSpeed);
         playerInput = new();
         Health = new(maxHealth);
+        WeaponLoadoutController = new(new WeaponLoadout(2));
+        interactionSensor = new InteractionSensor(this, transform, interactionScanRadius, interactableMask);
         EquipWeapon();
     }
 
@@ -47,6 +60,7 @@ public class PlayerController : MonoBehaviour
         {
             currentWeapon.AimAtScreenPosition(playerInput.PointerPosition);
         }
+        interactionSensor?.Tick();
     }
 
     void OnEnable()
