@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Weapon_MP5
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   WeaponName: MP5
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 4fe8d27933848ae4889921c637091385, type: 3}
   fireRate: 8
   bulletsPerShot: 1
   magazineSize: 30

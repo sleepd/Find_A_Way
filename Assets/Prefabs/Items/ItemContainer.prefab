@@ -50,7 +50,7 @@ MonoBehaviour:
   initialItems: []
   interactionPoint: {fileID: 8926984707387993613}
   focusRadius: 10
-  interactRadius: 2
+  interactRadius: 1
   displayName: Container
 --- !u!135 &4235680340675018826
 SphereCollider:

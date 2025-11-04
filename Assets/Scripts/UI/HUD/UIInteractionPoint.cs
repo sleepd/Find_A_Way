@@ -5,6 +5,7 @@ public class UIInteractionPoint : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] Image ring;
+    [SerializeField] GameObject interactiveKeyTip;
     [SerializeField, Tooltip("Scale when player reaches or exceeds focus radius.")] private float farScale = 1f;
     [SerializeField, Tooltip("Scale when player is within interact radius.")] private float nearScale = 0.6f;
 
@@ -17,6 +18,7 @@ public class UIInteractionPoint : MonoBehaviour
     void Awake()
     {
         _rectTransform = transform as RectTransform;
+        SetInteractiveKeyTipVisible(false);
     }
 
     public void Initialize(IInteractable target, Camera worldCamera)
@@ -64,6 +66,11 @@ public class UIInteractionPoint : MonoBehaviour
         float t = Mathf.Clamp01((clampedDistance - interactRadius) / Mathf.Max(focusRadius - interactRadius, Mathf.Epsilon));
         float scale = Mathf.Lerp(nearScale, farScale, t);
         ring.rectTransform.localScale = Vector3.one * scale;
+
+        bool withinInteract = interactRadius <= 0f
+            ? distance <= focusRadius
+            : distance <= interactRadius;
+        SetInteractiveKeyTipVisible(withinInteract);
     }
 
     private void SetVisible(bool visible)
@@ -76,6 +83,24 @@ public class UIInteractionPoint : MonoBehaviour
         else
         {
             gameObject.SetActive(visible);
+        }
+
+        if (!visible)
+        {
+            SetInteractiveKeyTipVisible(false);
+        }
+    }
+
+    private void SetInteractiveKeyTipVisible(bool visible)
+    {
+        if (interactiveKeyTip == null)
+        {
+            return;
+        }
+
+        if (interactiveKeyTip.activeSelf != visible)
+        {
+            interactiveKeyTip.SetActive(visible);
         }
     }
 }

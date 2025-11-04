@@ -44,6 +44,10 @@ public class PlayerMovement
             _velocity = _velocity.normalized * _maxSpeed;
         }
 
+        if (!_characterController.isGrounded)
+        //add vertical velocity
+            _velocity += Vector3.down * 0.1f;
+
         // Convert velocity (units/sec) into a per-frame displacement.
         _characterController.Move(_velocity * deltaTime);
     }

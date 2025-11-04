@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   WeaponName: Shotgun
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: b620c98d4ef39c344a0a7e87b16e2631, type: 3}
   fireRate: 1
   bulletsPerShot: 5
   magazineSize: 5
