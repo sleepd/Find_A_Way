@@ -11,6 +11,8 @@ public sealed class PlayerInput : IDisposable
     public event Action FireStarted;
     public event Action FireCanceled;
     public event Action ReloadTriggered;
+    public event Action NextWeaponTriggered;
+    public event Action PreviousWeaponTriggered;
     public bool IsFiring { get; private set; }
     private readonly InputSystem_Actions _inputActions;
 
@@ -20,6 +22,8 @@ public sealed class PlayerInput : IDisposable
         _inputActions.Player.Attack.performed += OnFirePerformed;
         _inputActions.Player.Attack.canceled += OnFireCanceled;
         _inputActions.Player.Reload.performed += OnReloadPerformed;
+        _inputActions.Player.Next.performed += OnNextPerformed;
+        _inputActions.Player.Previous.performed += OnPreviousPerformed;
         Enable();
     }
 
@@ -55,6 +59,16 @@ public sealed class PlayerInput : IDisposable
         ReloadTriggered?.Invoke();
     }
 
+    void OnNextPerformed(InputAction.CallbackContext ctx)
+    {
+        NextWeaponTriggered?.Invoke();
+    }
+
+    void OnPreviousPerformed(InputAction.CallbackContext ctx)
+    {
+        PreviousWeaponTriggered?.Invoke();
+    }
+
     public void Enable()
     {
         _inputActions.Player.Enable();
@@ -71,6 +85,8 @@ public sealed class PlayerInput : IDisposable
         _inputActions.Player.Attack.performed -= OnFirePerformed;
         _inputActions.Player.Attack.canceled -= OnFireCanceled;
         _inputActions.Player.Reload.performed -= OnReloadPerformed;
+        _inputActions.Player.Next.performed -= OnNextPerformed;
+        _inputActions.Player.Previous.performed -= OnPreviousPerformed;
         _inputActions.Dispose();
     }
 }

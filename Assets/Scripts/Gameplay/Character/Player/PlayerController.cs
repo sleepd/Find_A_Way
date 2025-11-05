@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [Header("Health")]
     [SerializeField, Tooltip("Max health point")]
     private int maxHealth;
+    [SerializeField] Transform weaponSlot;
 
     #region components
     private PlayerMovement playerMovement;
@@ -22,12 +23,12 @@ public class PlayerController : MonoBehaviour
     private PlayerAimer playerAimer;
     public CharacterHealth Health { get; private set; }
     public InventoryManager Inventory { get; private set; }
-    public WeaponController WeaponLoadoutController { get; private set; }
+    public WeaponLoadoutController WeaponLoadoutController { get; private set; }
     private InteractionSensor interactionSensor;
     #endregion
 
-    [SerializeField] private Weapon currentWeapon; // temporary hard code here
-    public Weapon CurrentWeapon => currentWeapon;
+    [SerializeField] private Weapon[] initializeWeapons; 
+
     [Header("Interaction")]
     [SerializeField] private LayerMask interactableMask = ~0;
     [SerializeField, Min(0.5f)] private float interactionScanRadius = 3f;
@@ -44,21 +45,23 @@ public class PlayerController : MonoBehaviour
         Health = new(maxHealth);
         WeaponLoadoutController = new(new WeaponLoadout(2));
         interactionSensor = new InteractionSensor(this, transform, interactionScanRadius, interactableMask);
-        EquipWeapon();
-    }
 
-    void EquipWeapon()
-    {
-        currentWeapon.SetPlayer(this);
+        // temporary add weapons
+        for (int i = 0; i < WeaponLoadoutController.Loadout.SlotCount; i++)
+        {
+            Weapon newWeapon = Instantiate(initializeWeapons[i], weaponSlot);
+            WeaponLoadoutController.AssignWeapon(i, newWeapon);
+        }
+        WeaponLoadoutController.EquipSlot(0);
     }
 
     void Update()
     {
         playerMovement.Move(playerInput.MoveDirection);
         playerAimer.AimAtScreenPosition(playerInput.PointerPosition);
-        if (currentWeapon != null)
+        if (WeaponLoadoutController.CurrentWeapon != null)
         {
-            currentWeapon.AimAtScreenPosition(playerInput.PointerPosition);
+            WeaponLoadoutController.CurrentWeapon.AimAtScreenPosition(playerInput.PointerPosition);
         }
         interactionSensor?.Tick();
     }
@@ -68,7 +71,8 @@ public class PlayerController : MonoBehaviour
         playerInput.FireStarted += HandleFireStarted;
         playerInput.FireCanceled += HandleFireCanceled;
         playerInput.ReloadTriggered += HandleReload;
-
+        playerInput.NextWeaponTriggered += HandleNextWeapon;
+        playerInput.PreviousWeaponTriggered += HandlePreviousWeapon;
     }
 
     void OnDisable()
@@ -76,10 +80,15 @@ public class PlayerController : MonoBehaviour
         playerInput.FireStarted -= HandleFireStarted;
         playerInput.FireCanceled -= HandleFireCanceled;
         playerInput.ReloadTriggered -= HandleReload;
+        playerInput.NextWeaponTriggered -= HandleNextWeapon;
+        playerInput.PreviousWeaponTriggered -= HandlePreviousWeapon;
         playerInput.Dispose();
     }
 
-    void HandleFireStarted() => currentWeapon.BeginFire();
-    void HandleFireCanceled() => currentWeapon.EndFire();
-    void HandleReload() => currentWeapon.Reload();
+    void HandleFireStarted() => WeaponLoadoutController.CurrentWeapon.BeginFire();
+    void HandleFireCanceled() => WeaponLoadoutController.CurrentWeapon.EndFire();
+    void HandleReload() => WeaponLoadoutController.CurrentWeapon.Reload();
+
+    void HandleNextWeapon() => WeaponLoadoutController.EquipNext(1);
+    void HandlePreviousWeapon() => WeaponLoadoutController.EquipNext(-1);
 }

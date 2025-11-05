@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Pure runtime model that tracks the player's equipped weapon slots, current selection,
-/// and surviving runtime state (WeaponModel). UI or controllers can subscribe to its events.
+/// Runtime container that tracks the player's weapon slots, current selection,
+/// and the instantiated weapon behaviours so other systems can react to loadout changes.
 /// </summary>
 public sealed class WeaponLoadout
 {
@@ -37,7 +37,7 @@ public sealed class WeaponLoadout
     public event Action<int, WeaponSlot> WeaponEquipped;
     public event Action<int, WeaponSlot> WeaponUnequipped;
 
-    public bool SetSlot(int index, WeaponData weaponData, WeaponModel weaponModel = null)
+    public bool SetSlot(int index, Weapon weaponInstance)
     {
         if (!IsValidIndex(index))
         {
@@ -45,13 +45,15 @@ public sealed class WeaponLoadout
         }
 
         var previous = _slots[index];
-        var nextSlot = weaponData == null
-            ? WeaponSlot.Empty
-            : WeaponSlot.FromData(weaponData, weaponModel ?? new WeaponModel(weaponData));
+        var nextSlot = weaponInstance == null ? WeaponSlot.Empty : new WeaponSlot(weaponInstance);
 
         if (previous.Equals(nextSlot))
         {
             return true;
+        }
+        if (weaponInstance != null)
+        {
+            weaponInstance.gameObject.SetActive(false);
         }
 
         _slots[index] = nextSlot;
@@ -128,29 +130,17 @@ public sealed class WeaponLoadout
 
     public readonly struct WeaponSlot : IEquatable<WeaponSlot>
     {
-        public static readonly WeaponSlot Empty = new WeaponSlot(null, null);
+        public static readonly WeaponSlot Empty = new WeaponSlot(null);
 
-        public WeaponSlot(WeaponData data, WeaponModel model)
+        public WeaponSlot(Weapon instance)
         {
-            Data = data;
-            Model = model;
+            Instance = instance;
         }
 
-        public WeaponData Data { get; }
-        public WeaponModel Model { get; }
-        public bool IsEmpty => Data == null || Model == null;
+        public Weapon Instance { get; }
+        public bool IsEmpty => Instance == null;
 
-        public static WeaponSlot FromData(WeaponData data, WeaponModel model)
-        {
-            if (data == null)
-            {
-                return Empty;
-            }
-
-            return new WeaponSlot(data, model ?? new WeaponModel(data));
-        }
-
-        public bool Equals(WeaponSlot other) => Data == other.Data && Model == other.Model;
+        public bool Equals(WeaponSlot other) => Instance == other.Instance;
 
         public override bool Equals(object obj) => obj is WeaponSlot other && Equals(other);
 
@@ -158,7 +148,7 @@ public sealed class WeaponLoadout
         {
             unchecked
             {
-                return ((Data != null ? Data.GetHashCode() : 0) * 397) ^ (Model != null ? Model.GetHashCode() : 0);
+                return Instance != null ? Instance.GetHashCode() : 0;
             }
         }
     }

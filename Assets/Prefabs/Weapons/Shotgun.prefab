@@ -51,8 +51,8 @@ MonoBehaviour:
   _firePoint: {fileID: 7850706916674434917}
   _bulletPool: {fileID: 0}
   _audioSource: {fileID: 2462045978211975174}
-  _fireClip: {fileID: 8300000, guid: 9b073da8e222c0a4ea88c0f8658f9187, type: 3}
-  _reloadClip: {fileID: 8300000, guid: ede4e369b1bfa2c4ca0ba79d69330b9f, type: 3}
+  _fireClip: {fileID: 8300000, guid: 069371913a40a5b428baf8ad80f4fa1b, type: 3}
+  _reloadClip: {fileID: 8300000, guid: 14ce8f250d76ac946ba28948e363ce44, type: 3}
   _fireVolume: 1
   _reloadVolume: 1
   _aimRotationSpeed: 360
@@ -179,7 +179,7 @@ Transform:
   m_GameObject: {fileID: 3765708698501876383}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.079, z: 1.455}
+  m_LocalPosition: {x: 0, y: 0.028, z: 0.509}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -195,15 +195,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 61da122e6165f764d946f878f5ef9185, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 61da122e6165f764d946f878f5ef9185, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 61da122e6165f764d946f878f5ef9185, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 61da122e6165f764d946f878f5ef9185, type: 3}
       propertyPath: m_LocalPosition.x
