@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -57,5 +58,10 @@ public class UIMainMenu : MonoBehaviour
     void OnCanceledQuit()
     {
         _quitButton.Select();
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("Level_Gym");
     }
 }

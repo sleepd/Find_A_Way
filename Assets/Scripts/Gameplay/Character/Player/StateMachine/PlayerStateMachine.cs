@@ -1,9 +1,10 @@
 using System;
-using System.Collections.Generic;
-
 public class PlayerStateMachin : StateMachineBase
 {
-    public PlayerStateMachin(Dictionary<Type, IState> stateMap, Type initialStateType = null) : base(stateMap, initialStateType)
+    public PlayerStateMachin(PlayerController playerController) : base()
     {
+        Player = playerController;
     }
+
+    public PlayerController Player {get; private set;}
 }

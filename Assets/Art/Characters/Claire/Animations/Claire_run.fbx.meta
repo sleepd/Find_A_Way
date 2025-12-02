@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fcdb17000bceb26499dbd7cf2daea5cc
+guid: e332a59685979b14993f419564613d48
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -19,15 +19,37 @@ ModelImporter:
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Armature|Action' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Spine' has scale animation that will be
-      discarded.\n\t'Neck01' is inbetween humanoid transforms and has rotation animation
-      that will be discarded.\n\t'Head' has scale animation that will be discarded.\n\t'UpperArm.L'
-      has scale animation that will be discarded.\n\t'LowerArm.L' has scale animation
-      that will be discarded.\n\t'Hand.L' has scale animation that will be discarded.\n\t'UpperArm.R'
-      has scale animation that will be discarded.\n\t'LowerArm.R' has scale animation
-      that will be discarded.\n\t'Hand.R' has scale animation that will be discarded.\n"
-    animationRetargetingWarnings: 
-    animationDoRetargetingWarnings: 0
+      to improve retargeting quality.\n\t'Neck01' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'Shoulder.L' has translation
+      animation that will be discarded.\n\t'Shoulder.R' has translation animation
+      that will be discarded.\n\nClip 'Armature|Action.002' has import animation
+      warnings that might lower retargeting quality:\nNote: Activate translation
+      DOF on avatar to improve retargeting quality.\n\t'Neck01' is inbetween humanoid
+      transforms and has rotation animation that will be discarded.\n\t'Shoulder.L'
+      has translation animation that will be discarded.\n\t'Shoulder.R' has translation
+      animation that will be discarded.\n"
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'Armature|Action':\n\tLeftUpperArm
+      average position error 5.7 mm and maximum position error 9.1 mm at time 0:12
+      (52.2%) Frame 12\n\tLeftLowerArm average position error 5.7 mm and maximum
+      position error 9.1 mm at time 0:12 (52.2%) Frame 12\n\tLeftHand average position
+      error 5.7 mm and maximum position error 9.1 mm at time 0:12 (52.2%) Frame 12\n\tRightUpperArm
+      average position error 5.6 mm and maximum position error 9.0 mm at time 0:
+      0 (0.0%) Frame 0\n\tRightLowerArm average position error 5.6 mm and maximum
+      position error 9.0 mm at time 0: 0 (0.0%) Frame 0\n\tRightHand average position
+      error 5.6 mm and maximum position error 9.0 mm at time 0: 0 (0.0%) Frame 0\n\tHead
+      average position error 0.9 mm and maximum position error 2.4 mm at time 0:
+      4 (17.4%) Frame 4\n\nRetargeting quality report for clip 'Armature|Action.002':\n\tLeftUpperArm
+      average position error 5.7 mm and maximum position error 9.1 mm at time 0:12
+      (52.2%) Frame 12\n\tLeftLowerArm average position error 5.7 mm and maximum
+      position error 9.1 mm at time 0:12 (52.2%) Frame 12\n\tLeftHand average position
+      error 5.7 mm and maximum position error 9.1 mm at time 0:12 (52.2%) Frame 12\n\tRightUpperArm
+      average position error 5.6 mm and maximum position error 9.0 mm at time 0:
+      0 (0.0%) Frame 0\n\tRightLowerArm average position error 5.6 mm and maximum
+      position error 9.0 mm at time 0: 0 (0.0%) Frame 0\n\tRightHand average position
+      error 5.6 mm and maximum position error 9.0 mm at time 0: 0 (0.0%) Frame 0\n\tHead
+      average position error 0.9 mm and maximum position error 2.4 mm at time 0:
+      4 (17.4%) Frame 4\n"
+    animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 3
@@ -39,25 +61,25 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Claire_Idle
+      name: Claire_run
       takeName: Armature|Action
-      internalID: 885944232402757753
+      internalID: -9125523489441110064
       firstFrame: 0
-      lastFrame: 47
+      lastFrame: 23
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
