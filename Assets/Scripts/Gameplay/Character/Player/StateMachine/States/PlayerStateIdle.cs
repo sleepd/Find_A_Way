@@ -9,10 +9,10 @@ public class PlayerStateIdle : PlayerState
     public override void Update()
     {
         base.Update();
-        var moveDir = StateMachin.PlayerController.Input.MoveDirection;
+        var moveDir = StateMachin.Player.Input.MoveDirection;
         if (moveDir.sqrMagnitude > 0f)
         {
-            StateMachin.PlayerController.Movement.Move(moveDir);
+            StateMachin.ChangeState<PlayerStateRunning>();
         }
     }
 }

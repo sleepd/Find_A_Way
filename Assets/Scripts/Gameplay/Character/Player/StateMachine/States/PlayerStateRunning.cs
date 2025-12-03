@@ -7,12 +7,24 @@ public class PlayerStateRunning : PlayerState
     public override void OnEnter()
     {
         base.OnEnter();
-        StateMachin.PlayerController.AnimatorController.SetBool("IsRunning", true);
+        StateMachin.Player.AnimatorController.SetBool("IsRunning", true);
     }
 
     public override void OnExit()
     {
         base.OnExit();
-        StateMachin.PlayerController.AnimatorController.SetBool("IsRunning", false);
+        StateMachin.Player.AnimatorController.SetBool("IsRunning", false);
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        var moveDir = StateMachin.Player.Input.MoveDirection;
+        if (moveDir.sqrMagnitude == 0f)
+        {
+            StateMachin.ChangeState<PlayerStateIdle>();
+            return;
+        }
+        StateMachin.Player.Movement.Rotate(moveDir);
     }
 }

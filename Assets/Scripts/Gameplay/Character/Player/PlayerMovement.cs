@@ -2,53 +2,65 @@ using UnityEngine;
 
 public class PlayerMovement
 {
-    private CharacterController _characterController;
+    private readonly Transform _transform;
+    private readonly CharacterController _characterController;
+    private readonly float _rotationSpeed;
+    private readonly Transform _meshRoot;
     private Vector3 _velocity;
     public Vector3 Velocity => _velocity;
-    private float _drag;
-    private float _acceleration;
-    private float _maxSpeed;
-    
-    public PlayerMovement(CharacterController characterController, float acceleration, float maxSpeed, float drag)
+
+    public PlayerMovement(CharacterController characterController, Animator animator, float rotationSpeed)
     {
         _characterController = characterController;
-        _acceleration = acceleration;
-        _maxSpeed = maxSpeed;
-        _drag = drag;
+        _rotationSpeed = rotationSpeed;
+        _transform = characterController.transform;
+        _meshRoot = animator != null ? animator.transform : null;
     }
 
-    public void Move(Vector3 direction)
+
+    public void Rotate(Vector3 direction)
     {
         var deltaTime = Time.deltaTime;
 
-        if (direction.sqrMagnitude > 0f)
+        if (direction.sqrMagnitude > 0.0001f)
         {
-            direction = direction.normalized;
-            _velocity += direction * (_acceleration * deltaTime);
+            var targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+            _transform.rotation = Quaternion.RotateTowards(
+                _transform.rotation,
+                targetRotation,
+                _rotationSpeed * deltaTime);
+        }
+    }
 
-            // Gradually remove any velocity that does not align with the new input direction.
-            var alongInput = Vector3.Project(_velocity, direction);
-            var perpendicular = _velocity - alongInput;
-            perpendicular = Vector3.MoveTowards(perpendicular, Vector3.zero, _drag * deltaTime);
-            _velocity = alongInput + perpendicular;
-        }
-        else
-        {
-            // No input: apply drag so the player slows to a stop.
-            _velocity = Vector3.MoveTowards(_velocity, Vector3.zero, _drag * deltaTime);
-        }
+    public void Move(Vector3 delta)
+    {
+        var deltaTime = Time.deltaTime;
 
-        if (_velocity.magnitude > _maxSpeed)
-        {
-            // Cap movement speed so we never exceed the configured maximum.
-            _velocity = _velocity.normalized * _maxSpeed;
-        }
+        // Use supplied root motion delta for displacement.
+        var rootMotion = delta;
 
         if (!_characterController.isGrounded)
-        //add vertical velocity
-            _velocity += Vector3.down * 0.1f;
+        {
+            // Apply a small downward pull so the controller stays grounded.
+            rootMotion += Physics.gravity * deltaTime;
+        }
+        else if (rootMotion.y < 0f)
+        {
+            rootMotion.y = 0f;
+        }
 
-        // Convert velocity (units/sec) into a per-frame displacement.
-        _characterController.Move(_velocity * deltaTime);
+        _characterController.Move(rootMotion);
+
+        if (deltaTime > Mathf.Epsilon)
+        {
+            _velocity = rootMotion / deltaTime;
+        }
+
+        // Reset child mesh so root motion only drives the parent once.
+        if (_meshRoot != null)
+        {
+            _meshRoot.localPosition = Vector3.zero;
+            _meshRoot.localRotation = Quaternion.identity;
+        }
     }
 }

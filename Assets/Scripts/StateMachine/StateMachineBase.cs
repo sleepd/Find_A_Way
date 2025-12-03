@@ -6,7 +6,6 @@ public abstract class StateMachineBase
 {
     private Dictionary<Type, IState> _stateMap;
     private IState _currentState;
-    public PlayerController PlayerController { get; private set;}
 
     protected StateMachineBase()
     {

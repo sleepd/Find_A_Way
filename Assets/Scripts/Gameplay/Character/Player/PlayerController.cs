@@ -1,17 +1,10 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IRootMotionParent
 {
-    [Header("Move")]
-    [SerializeField, Tooltip("How quickly velocity decays when there is no directional input.")]
-    private float drag;
-    [SerializeField, Tooltip("How fast the player accelerates when a direction is pressed.")]
-    private float acceleration;
-    [SerializeField, Tooltip("Maximum horizontal speed the player can reach while moving.")]
-    private float maxSpeed;
-    [Header("Aim")]
-    [SerializeField, Tooltip("Degrees per second the player can rotate toward the aim target.")]
-     private float rotationSpeed = 360f;
+    [Header("Movement")]
+    [SerializeField, Tooltip("Degrees per second the player turns toward movement input.")]
+    private float rotationSpeed = 360f;
     [Header("Health")]
     [SerializeField, Tooltip("Max health point")]
     private int maxHealth;
@@ -20,7 +13,6 @@ public class PlayerController : MonoBehaviour
     #region components
     public PlayerMovement Movement {get; private set;}
     public PlayerInput Input {get; private set;}
-    private PlayerAimer playerAimer;
     public CharacterHealth Health { get; private set; }
     public InventoryManager Inventory { get; private set; }
     public WeaponLoadoutController WeaponLoadoutController { get; private set; }
@@ -42,8 +34,9 @@ public class PlayerController : MonoBehaviour
     {
         CharacterController characterController = GetComponent<CharacterController>();
         AnimatorController = GetComponentInChildren<Animator>();
-        Movement = new(characterController, acceleration, maxSpeed, drag);
-        playerAimer = new(transform, Camera.main, rotationSpeed);
+        // We apply root motion ourselves through the CharacterController to keep collision handling consistent.
+        // AnimatorController.applyRootMotion = false;
+        Movement = new(characterController, AnimatorController, rotationSpeed);
         Input = new();
         Health = new(maxHealth);
         WeaponLoadoutController = new(new WeaponLoadout(2));
@@ -62,13 +55,18 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Movement.Move(Input.MoveDirection);
-        playerAimer.AimAtScreenPosition(Input.PointerPosition);
+        // Movement.Move(Input.MoveDirection);
+        StateMachin.Update();
         if (WeaponLoadoutController.CurrentWeapon != null)
         {
             WeaponLoadoutController.CurrentWeapon.AimAtScreenPosition(Input.PointerPosition);
         }
         interactionSensor?.Tick();
+    }
+
+    public void UpdateRootMotionDelta(Vector3 delta)
+    {
+        Movement.Move(delta);
     }
 
     void OnEnable()

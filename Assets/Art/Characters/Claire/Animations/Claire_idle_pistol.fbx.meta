@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fcdb17000bceb26499dbd7cf2daea5cc
+guid: f92050c189bfab241a82521b0f27c6a8
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -18,12 +18,11 @@ ModelImporter:
     motionNodeName: 
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Scene' has import animation warnings that might
-      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'Spine1' has scale animation that will be discarded.\n\t'Neck'
+      lower retargeting quality:\n\t'Spine1' has scale animation that will be discarded.\n\t'Neck'
       has scale animation that will be discarded.\n\t'UpperArm.L' has scale animation
       that will be discarded.\n\t'Hand.L' has scale animation that will be discarded.\n\t'UpperArm.R'
-      has scale animation that will be discarded.\n\t'Hand.R' has scale animation
-      that will be discarded.\n"
+      has scale animation that will be discarded.\n\t'LowerArm.R' has scale animation
+      that will be discarded.\n\t'Hand.R' has scale animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -37,7 +36,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Claire_idle
+      name: Claire_idle_pistol
       takeName: Scene
       internalID: -623603649343465320
       firstFrame: 1
@@ -48,12 +47,12 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 1
+      loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 1
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
@@ -64,7 +63,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -564,7 +563,7 @@ ModelImporter:
     feetSpacing: 0
     globalScale: 1
     rootMotionBoneName: 
-    hasTranslationDoF: 0
+    hasTranslationDoF: 1
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 5ff025bd1840ef44fa92a4f6af22563e, type: 3}

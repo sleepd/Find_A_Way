@@ -256,9 +256,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33fa9deacdb126544b98276f8df9104f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  drag: 10
-  acceleration: 10
-  maxSpeed: 3
   rotationSpeed: 480
   maxHealth: 50
   weaponSlot: {fileID: 1069711710}
@@ -569,6 +566,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 180263460}
   m_CullTransparentMesh: 1
+--- !u!1 &182904368 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ff025bd1840ef44fa92a4f6af22563e, type: 3}
+  m_PrefabInstance: {fileID: 1997050076}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &203844586
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,7 +972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 0, y: 0, z: 0}
+    PositionDamping: {x: 1, y: 1, z: 1}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -3238,6 +3240,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1750197354950549132, guid: 5ff025bd1840ef44fa92a4f6af22563e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3567639b26fa0204e8825636edf010b0, type: 2}
     - target: {fileID: 919132149155446097, guid: 5ff025bd1840ef44fa92a4f6af22563e, type: 3}
       propertyPath: m_Name
       value: Claire
@@ -3257,13 +3263,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ff025bd1840ef44fa92a4f6af22563e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1997050079}
   m_SourcePrefab: {fileID: 100100000, guid: 5ff025bd1840ef44fa92a4f6af22563e, type: 3}
 --- !u!4 &1997050077 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5ff025bd1840ef44fa92a4f6af22563e, type: 3}
   m_PrefabInstance: {fileID: 1997050076}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1997050079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182904368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d3acf698402a04b8c9087c93e5748f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RootMotionToPlayer
 --- !u!1001 &3063883931894460285
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fcdb17000bceb26499dbd7cf2daea5cc
+guid: d257cfbfd7a8a3c44a3628943698e803
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -17,13 +17,7 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Scene' has import animation warnings that might
-      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'Spine1' has scale animation that will be discarded.\n\t'Neck'
-      has scale animation that will be discarded.\n\t'UpperArm.L' has scale animation
-      that will be discarded.\n\t'Hand.L' has scale animation that will be discarded.\n\t'UpperArm.R'
-      has scale animation that will be discarded.\n\t'Hand.R' has scale animation
-      that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -37,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Claire_idle
+      name: Claire_Running
       takeName: Scene
       internalID: -623603649343465320
       firstFrame: 1
-      lastFrame: 48
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -50,8 +44,8 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
-      loopBlendOrientation: 1
-      loopBlendPositionY: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
@@ -564,7 +558,7 @@ ModelImporter:
     feetSpacing: 0
     globalScale: 1
     rootMotionBoneName: 
-    hasTranslationDoF: 0
+    hasTranslationDoF: 1
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 5ff025bd1840ef44fa92a4f6af22563e, type: 3}
