@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour, IRootMotionParent
     [Header("Movement")]
     [SerializeField, Tooltip("Degrees per second the player turns toward movement input.")]
     private float rotationSpeed = 360f;
+    [SerializeField, Tooltip("Player move speed while aiming")]
+    private float walkingSpeed = 1f;
     [Header("Health")]
     [SerializeField, Tooltip("Max health point")]
     private int maxHealth;
@@ -19,6 +21,8 @@ public class PlayerController : MonoBehaviour, IRootMotionParent
     private InteractionSensor interactionSensor;
     public Animator AnimatorController {get; private set;}
     public PlayerStateMachin StateMachin {get; private set;}
+    public float RotateSpeed => rotationSpeed;
+    public float WalkingSpeed => walkingSpeed;
     #endregion
 
     [SerializeField] private Weapon[] initializeWeapons; 

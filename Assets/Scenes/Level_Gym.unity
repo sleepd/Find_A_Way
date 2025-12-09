@@ -257,6 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   rotationSpeed: 480
+  walkingSpeed: 0.5
   maxHealth: 50
   weaponSlot: {fileID: 1069711710}
   initializeWeapons:

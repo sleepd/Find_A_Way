@@ -69,13 +69,13 @@ BlendTree:
     m_DirectBlendParameter: MoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -623603649343465320, guid: b08c8b67b713cb443b0d1ac68502c710, type: 3}
+    m_Motion: {fileID: -623603649343465320, guid: c8041bb16c9366843bb0e7921493da89, type: 3}
     m_Threshold: 0.22222222
     m_Position: {x: 1, y: 0}
     m_TimeScale: 1
-    m_CycleOffset: 0
+    m_CycleOffset: 0.5
     m_DirectBlendParameter: MoveX
-    m_Mirror: 0
+    m_Mirror: 1
   - serializedVersion: 2
     m_Motion: {fileID: -623603649343465320, guid: a2dcb25f8e2d1d347a33cbf88fbd5310, type: 3}
     m_Threshold: 0.2777778
@@ -85,13 +85,13 @@ BlendTree:
     m_DirectBlendParameter: MoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -623603649343465320, guid: 81794243feae08c46ba8b94d1026f698, type: 3}
+    m_Motion: {fileID: -623603649343465320, guid: a2dcb25f8e2d1d347a33cbf88fbd5310, type: 3}
     m_Threshold: 0.33333334
     m_Position: {x: 1, y: 1}
     m_TimeScale: 1
-    m_CycleOffset: 0
+    m_CycleOffset: 0.5
     m_DirectBlendParameter: MoveX
-    m_Mirror: 0
+    m_Mirror: 1
   - serializedVersion: 2
     m_Motion: {fileID: -623603649343465320, guid: 6bc193e6e96dfe4488fa2df8bd3ca0f8, type: 3}
     m_Threshold: 0.3888889
@@ -101,20 +101,20 @@ BlendTree:
     m_DirectBlendParameter: MoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -623603649343465320, guid: ecf9108724a35e3488ebd9c648ed908f, type: 3}
+    m_Motion: {fileID: -623603649343465320, guid: 6bc193e6e96dfe4488fa2df8bd3ca0f8, type: 3}
     m_Threshold: 0.44444445
     m_Position: {x: 1, y: -1}
     m_TimeScale: 1
-    m_CycleOffset: 0
+    m_CycleOffset: 0.5
     m_DirectBlendParameter: MoveX
-    m_Mirror: 0
+    m_Mirror: 1
   m_BlendParameter: MoveX
   m_BlendParameterY: MoveY
   m_MinThreshold: 0
   m_MaxThreshold: 0.44444445
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
-  m_BlendType: 1
+  m_BlendType: 3
 --- !u!1102 &-7980914766593639283
 AnimatorState:
   serializedVersion: 6
