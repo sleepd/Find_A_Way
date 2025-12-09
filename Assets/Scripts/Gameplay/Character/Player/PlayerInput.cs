@@ -10,10 +10,13 @@ public sealed class PlayerInput : IDisposable
 {
     public event Action FireStarted;
     public event Action FireCanceled;
+    public event Action AimingStarted;
+    public event Action AimingCanceled;
     public event Action ReloadTriggered;
     public event Action NextWeaponTriggered;
     public event Action PreviousWeaponTriggered;
     public bool IsFiring { get; private set; }
+    public bool IsAiming { get; private set; }
     private readonly InputSystem_Actions _inputActions;
 
     public PlayerInput()
@@ -21,6 +24,8 @@ public sealed class PlayerInput : IDisposable
         _inputActions = new InputSystem_Actions();
         _inputActions.Player.Attack.performed += OnFirePerformed;
         _inputActions.Player.Attack.canceled += OnFireCanceled;
+        _inputActions.Player.Aiming.performed += OnAimPerformed;
+        _inputActions.Player.Aiming.canceled += OnAimCanceled;
         _inputActions.Player.Reload.performed += OnReloadPerformed;
         _inputActions.Player.Next.performed += OnNextPerformed;
         _inputActions.Player.Previous.performed += OnPreviousPerformed;
@@ -54,6 +59,18 @@ public sealed class PlayerInput : IDisposable
         FireCanceled?.Invoke();
     }
 
+    void OnAimPerformed(InputAction.CallbackContext ctx)
+    {
+        IsAiming = true;
+        AimingStarted?.Invoke();
+    }
+
+    void OnAimCanceled(InputAction.CallbackContext ctx)
+    {
+        IsAiming = false;
+        AimingCanceled?.Invoke();
+    }
+
     void OnReloadPerformed(InputAction.CallbackContext ctx)
     {
         ReloadTriggered?.Invoke();
@@ -84,6 +101,8 @@ public sealed class PlayerInput : IDisposable
         Disable();
         _inputActions.Player.Attack.performed -= OnFirePerformed;
         _inputActions.Player.Attack.canceled -= OnFireCanceled;
+        _inputActions.Player.Aiming.performed -= OnAimPerformed;
+        _inputActions.Player.Aiming.canceled -= OnAimCanceled;
         _inputActions.Player.Reload.performed -= OnReloadPerformed;
         _inputActions.Player.Next.performed -= OnNextPerformed;
         _inputActions.Player.Previous.performed -= OnPreviousPerformed;

@@ -13,6 +13,7 @@ public static class PlayerStateDictionary
         {
             { typeof(PlayerStateIdle), new PlayerStateIdle(stateMachin) },
             { typeof(PlayerStateRunning), new PlayerStateRunning(stateMachin) },
+            { typeof(PlayerStateAiming), new PlayerStateAiming(stateMachin) }
         };
     }
 }

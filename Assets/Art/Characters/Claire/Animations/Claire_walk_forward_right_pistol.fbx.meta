@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dc35c70669a910642bf5e6c8538bc55e
+guid: 81794243feae08c46ba8b94d1026f698
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,7 +31,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Claire walk back
+      name: Claire walk forward right
       takeName: Scene
       internalID: -623603649343465320
       firstFrame: 1

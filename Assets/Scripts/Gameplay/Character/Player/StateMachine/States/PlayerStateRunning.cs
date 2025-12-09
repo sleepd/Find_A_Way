@@ -8,12 +8,14 @@ public class PlayerStateRunning : PlayerState
     {
         base.OnEnter();
         StateMachin.Player.AnimatorController.SetBool("IsRunning", true);
+        StateMachin.Player.Input.AimingStarted += HandleAimingStarted;
     }
 
     public override void OnExit()
     {
         base.OnExit();
         StateMachin.Player.AnimatorController.SetBool("IsRunning", false);
+        StateMachin.Player.Input.AimingStarted -= HandleAimingStarted;
     }
 
     public override void Update()
@@ -26,5 +28,10 @@ public class PlayerStateRunning : PlayerState
             return;
         }
         StateMachin.Player.Movement.Rotate(moveDir);
+    }
+
+    void HandleAimingStarted()
+    {
+        StateMachin.ChangeState<PlayerStateAiming>();
     }
 }

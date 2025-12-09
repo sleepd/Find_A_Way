@@ -15,4 +15,21 @@ public class PlayerStateIdle : PlayerState
             StateMachin.ChangeState<PlayerStateRunning>();
         }
     }
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        StateMachin.Player.Input.AimingStarted += HandleAimingStarted;
+    }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+        StateMachin.Player.Input.AimingStarted -= HandleAimingStarted;
+    }
+
+    void HandleAimingStarted()
+    {
+        StateMachin.ChangeState<PlayerStateAiming>();
+    }
 }
