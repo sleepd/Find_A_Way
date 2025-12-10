@@ -27,3 +27,4 @@ MonoBehaviour:
   moveSpeedReduction: 0
   bulletSpeed: 100
   maxRange: 30
+  type: 2

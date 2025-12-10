@@ -106,12 +106,28 @@ public class ItemContainer : MonoBehaviour, IInteractable
 
     public void EndFocus(PlayerController player)
     {
-        // Placeholder; remove highlight or indicator here if desired.
+        var dialog = UnityEngine.Object.FindFirstObjectByType<UILootDialog>(FindObjectsInactive.Include);
+        if (dialog != null && dialog.CurrentContainer == this)
+        {
+            dialog.Hide();
+            var menu = UnityEngine.Object.FindFirstObjectByType<UIInGameMenu>(FindObjectsInactive.Include);
+            menu?.HideInventoryPanel();
+        }
     }
 
     public void Interact(PlayerController player)
     {
-        // Intentionally left empty. UI layer should subscribe to interactions and open/close views.
+        var dialog = UnityEngine.Object.FindFirstObjectByType<UILootDialog>(FindObjectsInactive.Include);
+        if (dialog != null)
+        {
+            dialog.Show(this);
+            var menu = UnityEngine.Object.FindFirstObjectByType<UIInGameMenu>(FindObjectsInactive.Include);
+            menu?.ShowInventoryPanel();
+        }
+        else
+        {
+            Debug.LogWarning("UILootDialog not found in scene; cannot display loot UI.");
+        }
     }
 
     void OnDestroy()

@@ -43,7 +43,8 @@ public class PlayerController : MonoBehaviour, IRootMotionParent
         Movement = new(characterController, AnimatorController, rotationSpeed);
         Input = new();
         Health = new(maxHealth);
-        WeaponLoadoutController = new(new WeaponLoadout(2));
+        Inventory = new(25);
+        WeaponLoadoutController = new(new WeaponLoadout(3));
         interactionSensor = new InteractionSensor(this, transform, interactionScanRadius, interactableMask);
         StateMachin = new(this);
         StateMachin.Initialize(PlayerStateDictionary.Build(StateMachin), typeof(PlayerStateIdle));
@@ -52,50 +53,78 @@ public class PlayerController : MonoBehaviour, IRootMotionParent
         for (int i = 0; i < WeaponLoadoutController.Loadout.SlotCount; i++)
         {
             Weapon newWeapon = Instantiate(initializeWeapons[i], weaponSlot);
+            newWeapon.SetPlayer(this);
             WeaponLoadoutController.AssignWeapon(i, newWeapon);
         }
         WeaponLoadoutController.EquipSlot(0);
+        SetAnimatorWeaponType(WeaponLoadoutController.CurrentWeapon);
     }
 
     void Update()
     {
         // Movement.Move(Input.MoveDirection);
         StateMachin.Update();
-        if (WeaponLoadoutController.CurrentWeapon != null)
-        {
-            WeaponLoadoutController.CurrentWeapon.AimAtScreenPosition(Input.PointerPosition);
-        }
         interactionSensor?.Tick();
     }
 
     public void UpdateRootMotionDelta(Vector3 delta)
     {
-        Movement.Move(delta);
+        // Skip applying near-zero root motion to avoid blocking manual movement (e.g., aiming state).
+        if (delta.sqrMagnitude > 0.000001f)
+        {
+            Movement.Move(delta);
+        }
     }
 
     void OnEnable()
     {
-        Input.FireStarted += HandleFireStarted;
-        Input.FireCanceled += HandleFireCanceled;
         Input.ReloadTriggered += HandleReload;
         Input.NextWeaponTriggered += HandleNextWeapon;
         Input.PreviousWeaponTriggered += HandlePreviousWeapon;
+        Input.InteractTriggered += HandleInteract;
+        if (WeaponLoadoutController != null)
+        {
+            WeaponLoadoutController.WeaponActivated += HandleWeaponActivated;
+        }
     }
 
     void OnDisable()
     {
-        Input.FireStarted -= HandleFireStarted;
-        Input.FireCanceled -= HandleFireCanceled;
         Input.ReloadTriggered -= HandleReload;
         Input.NextWeaponTriggered -= HandleNextWeapon;
         Input.PreviousWeaponTriggered -= HandlePreviousWeapon;
+        Input.InteractTriggered -= HandleInteract;
+        if (WeaponLoadoutController != null)
+        {
+            WeaponLoadoutController.WeaponActivated -= HandleWeaponActivated;
+        }
         Input.Dispose();
     }
 
-    void HandleFireStarted() => WeaponLoadoutController.CurrentWeapon.BeginFire();
-    void HandleFireCanceled() => WeaponLoadoutController.CurrentWeapon.EndFire();
     void HandleReload() => WeaponLoadoutController.CurrentWeapon.Reload();
 
     void HandleNextWeapon() => WeaponLoadoutController.EquipNext(1);
     void HandlePreviousWeapon() => WeaponLoadoutController.EquipNext(-1);
+
+    void HandleWeaponActivated(WeaponLoadout.WeaponSlot slot)
+    {
+        SetAnimatorWeaponType(slot.Instance);
+    }
+
+    void HandleInteract()
+    {
+        Debug.Log("Interact!");
+        interactionSensor?.Interact();
+    }
+
+    void SetAnimatorWeaponType(Weapon weapon)
+    {
+        float weaponType = 0f;
+        if (weapon != null && weapon.Model != null && weapon.Model.Data != null)
+        {
+            weaponType = weapon.Model.Data.type;
+        }
+
+        AnimatorController.SetFloat("WeaponType", weaponType);
+    }
 }

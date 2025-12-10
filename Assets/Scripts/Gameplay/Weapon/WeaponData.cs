@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponData", menuName = "GameData/WeaponData")]
@@ -21,6 +22,8 @@ public class WeaponData : ScriptableObject
     public float bulletSpeed;
     [Tooltip("Maximum range in meters before projectiles despawn.")]
     public float maxRange;
+    [Tooltip("0 melee, 1 pistol, 2 rifle")]
+    public float type;
 }
 
 public enum ReloadMode

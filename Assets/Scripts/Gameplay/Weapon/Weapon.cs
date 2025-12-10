@@ -94,58 +94,6 @@ public class Weapon : MonoBehaviour, IWeapon
         _playerController = playerController;
     }
 
-    public void AimAtScreenPosition(Vector2 screenPosition)
-    {
-        if (_firePoint == null)
-        {
-            return;
-        }
-
-        var camera = _camera != null ? _camera : Camera.main;
-        if (camera == null)
-        {
-            return;
-        }
-
-        var aimRay = camera.ScreenPointToRay(screenPosition);
-        var aimPlane = new Plane(Vector3.up, new Vector3(0f, _firePoint.position.y, 0f));
-
-        if (!aimPlane.Raycast(aimRay, out var enter))
-        {
-            return;
-        }
-
-        var target = aimRay.GetPoint(enter);
-
-        var planarFromMuzzle = target - _firePoint.position;
-        planarFromMuzzle.y = 0f;
-
-        var minDistance = Mathf.Max(0f, _minAimDistance);
-        var minSqrDistance = minDistance * minDistance;
-
-        if (planarFromMuzzle.sqrMagnitude < Mathf.Max(minSqrDistance, 0.0001f))
-        {
-            return;
-        }
-
-        if (planarFromMuzzle.sqrMagnitude > 0.0001f)
-        {
-            var targetRotation = Quaternion.LookRotation(planarFromMuzzle.normalized, Vector3.up);
-            var rotationSpeed = Mathf.Max(0f, _aimRotationSpeed);
-            if (rotationSpeed <= 0f)
-            {
-                transform.rotation = targetRotation;
-            }
-            else
-            {
-                transform.rotation = Quaternion.RotateTowards(
-                    transform.rotation,
-                    targetRotation,
-                    rotationSpeed * Time.deltaTime);
-            }
-        }
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -198,11 +146,7 @@ public class Weapon : MonoBehaviour, IWeapon
         PlayFireSound();
 
         var spawnPosition = _firePoint.position;
-        var baseDirection = _firePoint.forward;
-        if (baseDirection.sqrMagnitude <= 0.0001f && _playerController != null)
-        {
-            baseDirection = _playerController.transform.forward;
-        }
+        var baseDirection = _playerController.transform.forward;
         var rayOrigin = spawnPosition;
 
         var bulletsPerShot = Mathf.Max(1, Model.Data.bulletsPerShot);

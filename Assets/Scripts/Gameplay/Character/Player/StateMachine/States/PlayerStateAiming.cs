@@ -25,6 +25,8 @@ public class PlayerStateAiming : PlayerState
         base.OnEnter();
         StateMachin.Player.AnimatorController.SetBool("IsAiming", true);
         StateMachin.Player.Input.AimingCanceled += HandleAimingCanceled;
+        StateMachin.Player.Input.FireStarted += HandleFireStarted;
+        StateMachin.Player.Input.FireCanceled += HandleFireCanceled;
     }
 
     public override void Update()
@@ -103,7 +105,6 @@ public class PlayerStateAiming : PlayerState
         {
             return;
         }
-
         var moveDelta = moveDir.normalized * StateMachin.Player.WalkingSpeed * Time.deltaTime;
         StateMachin.Player.Movement.Move(moveDelta);
     }
@@ -138,6 +139,11 @@ public class PlayerStateAiming : PlayerState
         base.OnExit();
         StateMachin.Player.AnimatorController.SetBool("IsAiming", false);
         StateMachin.Player.Input.AimingCanceled -= HandleAimingCanceled;
+        StateMachin.Player.Input.FireStarted -= HandleFireStarted;
+        StateMachin.Player.Input.FireCanceled -= HandleFireCanceled;
+
+        // Ensure firing stops when离开瞄准状态。
+        HandleFireCanceled();
     }
 
     void HandleAimingCanceled()
@@ -146,5 +152,23 @@ public class PlayerStateAiming : PlayerState
         StateMachin.ChangeState(moveDir.sqrMagnitude > 0f
             ? typeof(PlayerStateRunning)
             : typeof(PlayerStateIdle));
+    }
+
+    void HandleFireStarted()
+    {
+        var weapon = StateMachin.Player.WeaponLoadoutController.CurrentWeapon;
+        if (weapon != null)
+        {
+            weapon.BeginFire();
+        }
+    }
+
+    void HandleFireCanceled()
+    {
+        var weapon = StateMachin.Player.WeaponLoadoutController.CurrentWeapon;
+        if (weapon != null)
+        {
+            weapon.EndFire();
+        }
     }
 }

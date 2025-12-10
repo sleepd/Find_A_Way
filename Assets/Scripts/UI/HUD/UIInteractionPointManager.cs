@@ -29,7 +29,7 @@ public class UIInteractionPointManager : MonoBehaviour
     {
         if (playerController == null)
         {
-            playerController = FindObjectOfType<PlayerController>();
+            playerController = UnityEngine.Object.FindFirstObjectByType<PlayerController>();
         }
 
         _sensor = playerController?.InteractionSensor;

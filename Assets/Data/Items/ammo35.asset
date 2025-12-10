@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d90dc61f2e3793542ba4db0254831af3, type: 3}
+  m_Name: ammo35
+  m_EditorClassIdentifier: Assembly-CSharp::AmmoItemData
+  id: ITEM_AMMO_35
+  displayName: .35 ammo
+  icon: {fileID: 21300000, guid: ba730f26a72766f4f972db75dfbb3579, type: 3}
+  maxStack: 30
+  ammoId: 1
+  ammoAmount: 1

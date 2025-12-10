@@ -15,6 +15,7 @@ public sealed class PlayerInput : IDisposable
     public event Action ReloadTriggered;
     public event Action NextWeaponTriggered;
     public event Action PreviousWeaponTriggered;
+    public event Action InteractTriggered;
     public bool IsFiring { get; private set; }
     public bool IsAiming { get; private set; }
     private readonly InputSystem_Actions _inputActions;
@@ -29,6 +30,7 @@ public sealed class PlayerInput : IDisposable
         _inputActions.Player.Reload.performed += OnReloadPerformed;
         _inputActions.Player.Next.performed += OnNextPerformed;
         _inputActions.Player.Previous.performed += OnPreviousPerformed;
+        _inputActions.Player.Interact.performed += OnInteractPerformed;
         Enable();
     }
 
@@ -86,6 +88,11 @@ public sealed class PlayerInput : IDisposable
         PreviousWeaponTriggered?.Invoke();
     }
 
+    void OnInteractPerformed(InputAction.CallbackContext ctx)
+    {
+        InteractTriggered?.Invoke();
+    }
+
     public void Enable()
     {
         _inputActions.Player.Enable();
@@ -106,6 +113,7 @@ public sealed class PlayerInput : IDisposable
         _inputActions.Player.Reload.performed -= OnReloadPerformed;
         _inputActions.Player.Next.performed -= OnNextPerformed;
         _inputActions.Player.Previous.performed -= OnPreviousPerformed;
+        _inputActions.Player.Interact.performed -= OnInteractPerformed;
         _inputActions.Dispose();
     }
 }

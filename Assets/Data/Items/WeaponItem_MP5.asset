@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: WeaponItem_MP5
+  m_Script: {fileID: 11500000, guid: 8a52cf7bb0dd9de4e9fab06707fdf7be, type: 3}
+  m_Name: WeaponItem_Mp5
   m_EditorClassIdentifier: Assembly-CSharp::WeaponItemData
-  id: weapon.mo5
-  displayName: HK MP5
-  icon: {fileID: 0}
+  id: ITEM_WEAPON_MP5
+  displayName: MP5
+  icon: {fileID: 21300000, guid: 4fe8d27933848ae4889921c637091385, type: 3}
   maxStack: 1
   weaponPrefab: {fileID: 7953511408355203298, guid: 7be4685a6afafb043beaf79ede4a9709, type: 3}
