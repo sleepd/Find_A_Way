@@ -1,9 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour, IDamageable
 {
     [SerializeField, Min(1)] private int maxHealth = 10;
+    [Header("Behaviour")]
+    [SerializeField, Min(0.1f)] private float detectionRadius = 10f;
+    [SerializeField, Min(0.1f)] private float attackRange = 2f;
+    [SerializeField, Min(0f)] private float attackCooldown = 1.5f;
+    [SerializeField, Min(1)] private int attackDamage = 1;
+    [SerializeField] private NavMeshAgent agent;
 
     public CharacterHealth Health { get; private set; }
 
@@ -19,15 +26,84 @@ public class EnemyController : MonoBehaviour, IDamageable
     public event Action Died;
     public event Action Revived;
 
+    private PlayerController _player;
+    private bool _hasAttacked;
+
     void Awake()
     {
         Health = new CharacterHealth(Mathf.Max(1, maxHealth));
         SubscribeToHealthEvents();
+        if (agent == null)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
+        if (agent != null)
+        {
+            agent.stoppingDistance = attackRange;
+        }
     }
 
     void OnDestroy()
     {
         UnsubscribeFromHealthEvents();
+    }
+
+    void Update()
+    {
+        if (IsDead)
+        {
+            if (agent != null && agent.enabled)
+            {
+                agent.ResetPath();
+                agent.isStopped = true;
+            }
+            return;
+        }
+
+        if (_player == null)
+        {
+            _player = LevelManager.Instance != null ? LevelManager.Instance.Player : null;
+            if (_player == null)
+            {
+                return;
+            }
+        }
+
+        var playerPos = _player.transform.position;
+        float distance = Vector3.Distance(transform.position, playerPos);
+
+        if (distance <= detectionRadius)
+        {
+            if (agent != null && agent.enabled)
+            {
+                agent.isStopped = false;
+                agent.SetDestination(playerPos);
+            }
+
+            if (!_hasAttacked && distance <= attackRange)
+            {
+                PerformAttack();
+                _hasAttacked = true; // Prototype: attack once when close enough.
+                if (agent != null && agent.enabled)
+                {
+                    agent.isStopped = true;
+                    agent.ResetPath();
+                }
+            }
+        }
+        else if (agent != null && agent.enabled)
+        {
+            agent.ResetPath();
+            agent.isStopped = true;
+        }
+    }
+
+    private void PerformAttack()
+    {
+        if (_player?.Health != null && !_player.Health.IsDead)
+        {
+            _player.Health.ApplyDamage(attackDamage);
+        }
     }
 
     public int ApplyDamage(int amount) => Health != null ? Health.ApplyDamage(amount) : 0;

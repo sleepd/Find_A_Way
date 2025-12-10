@@ -113,6 +113,7 @@ public class CharacterHealth : IDamageable
 
         if (previousHealth > 0 && IsDead)
         {
+            Debug.Log("[CharacterHealth] Died event invoked.");
             Died?.Invoke();
         }
 
@@ -161,6 +162,7 @@ public class CharacterHealth : IDamageable
 
         currentHealth = 0;
         HealthChanged?.Invoke(currentHealth, MaxHealth);
+        Debug.Log("[CharacterHealth] Kill called, Died event invoked.");
         Died?.Invoke();
     }
 

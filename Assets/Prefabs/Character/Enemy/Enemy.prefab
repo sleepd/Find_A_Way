@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8836022869521737851}
   - component: {fileID: 1370478090734365483}
   - component: {fileID: 9144857807242441199}
+  - component: {fileID: 1798459469337330193}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -72,6 +73,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   maxHealth: 20
+  detectionRadius: 10
+  attackRange: 2
+  attackCooldown: 1.5
+  attackDamage: 1
+  agent: {fileID: 0}
+--- !u!195 &1798459469337330193
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986266783012416407}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &6251136703653061238
 GameObject:
   m_ObjectHideFlags: 0

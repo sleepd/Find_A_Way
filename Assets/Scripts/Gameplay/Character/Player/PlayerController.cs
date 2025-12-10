@@ -48,6 +48,10 @@ public class PlayerController : MonoBehaviour, IRootMotionParent
         interactionSensor = new InteractionSensor(this, transform, interactionScanRadius, interactableMask);
         StateMachin = new(this);
         StateMachin.Initialize(PlayerStateDictionary.Build(StateMachin), typeof(PlayerStateIdle));
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.RegisterPlayer(this);
+        }
 
         // temporary add weapons
         for (int i = 0; i < WeaponLoadoutController.Loadout.SlotCount; i++)
