@@ -8,6 +8,8 @@ public class UIInGameMenu : MonoBehaviour
     [SerializeField] GameObject inventoryPanel;
     [SerializeField] UIInventoryView playerInventoryView;
     [SerializeField] UILootDialog lootDialog;
+    [SerializeField] GameObject craftingPanel;
+    [SerializeField] GameObject helpPanel;
     private InputSystem_Actions _inputActions;
     private float _previousTimeScale = 1f;
     private Coroutine _bindInventoryRoutine;
@@ -26,6 +28,8 @@ public class UIInGameMenu : MonoBehaviour
         _inputActions ??= new InputSystem_Actions();
         _inputActions.UI.ESC.performed += HandleEsc;
         _inputActions.UI.Inventory.performed += HandleInventory;
+        _inputActions.UI.CraftingMenu.performed += HandleCraftingMenu;
+        _inputActions.UI.Help.performed += HandleHelp;
         _inputActions.UI.Enable();
         TryStartBindInventory();
 
@@ -46,6 +50,8 @@ public class UIInGameMenu : MonoBehaviour
         {
             _inputActions.UI.ESC.performed -= HandleEsc;
             _inputActions.UI.Inventory.performed -= HandleInventory;
+            _inputActions.UI.CraftingMenu.performed -= HandleCraftingMenu;
+            _inputActions.UI.Help.performed -= HandleHelp;
             _inputActions.UI.Disable();
         }
     }
@@ -109,6 +115,12 @@ public class UIInGameMenu : MonoBehaviour
 
     void HandleEsc(InputAction.CallbackContext context)
     {
+        if (craftingPanel != null && craftingPanel.activeSelf)
+        {
+            HideCraftingPanel();
+            return;
+        }
+
         if (inGameMenuPanel != null && inGameMenuPanel.activeSelf)
         {
             HideMenu();
@@ -135,6 +147,28 @@ public class UIInGameMenu : MonoBehaviour
         {
             inventoryPanel.SetActive(false);
             lootDialog?.Hide();
+        }
+    }
+
+    void HandleCraftingMenu(InputAction.CallbackContext context)
+    {
+        ShowCraftingPanel();
+    }
+
+    void HandleHelp(InputAction.CallbackContext context)
+    {
+        if (helpPanel == null)
+        {
+            return;
+        }
+
+        if (helpPanel.activeSelf)
+        {
+            HideHelpPanel();
+        }
+        else
+        {
+            ShowHelpPanel();
         }
     }
 
@@ -182,6 +216,38 @@ public class UIInGameMenu : MonoBehaviour
         if (inventoryPanel != null)
         {
             inventoryPanel.SetActive(false);
+        }
+    }
+
+    public void ShowCraftingPanel()
+    {
+        if (craftingPanel != null)
+        {
+            craftingPanel.SetActive(true);
+        }
+    }
+
+    public void HideCraftingPanel()
+    {
+        if (craftingPanel != null)
+        {
+            craftingPanel.SetActive(false);
+        }
+    }
+
+    public void ShowHelpPanel()
+    {
+        if (helpPanel != null)
+        {
+            helpPanel.SetActive(true);
+        }
+    }
+
+    public void HideHelpPanel()
+    {
+        if (helpPanel != null)
+        {
+            helpPanel.SetActive(false);
         }
     }
 }

@@ -90,7 +90,7 @@ public class PlayerStateAiming : PlayerState
         var right2D = new Vector2(forward2D.y, -forward2D.x);
         var input2D = new Vector2(moveDir.x, moveDir.z);
 
-        // 将移动输入投影到角色当前朝向的局部空间，再吸附到最近的八个方向。
+        // Project move input into the player's local space and snap to the nearest of eight directions.
         var projected = new Vector2(Vector2.Dot(input2D, right2D), Vector2.Dot(input2D, forward2D));
         var snapped = SnapToOctant(projected);
 
@@ -133,7 +133,6 @@ public class PlayerStateAiming : PlayerState
         return bestDir;
     }
 
-
     public override void OnExit()
     {
         base.OnExit();
@@ -142,7 +141,7 @@ public class PlayerStateAiming : PlayerState
         StateMachin.Player.Input.FireStarted -= HandleFireStarted;
         StateMachin.Player.Input.FireCanceled -= HandleFireCanceled;
 
-        // Ensure firing stops when离开瞄准状态。
+        // Ensure firing stops when leaving the aiming state.
         HandleFireCanceled();
     }
 
