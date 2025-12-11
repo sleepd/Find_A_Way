@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   WeaponName: FN57
   sprite: {fileID: 21300000, guid: e9963797b133cb7489fcda6a5b72c528, type: 3}
-  fireRate: 1
+  fireRate: 2
   bulletsPerShot: 1
   magazineSize: 15
   damage: 7
