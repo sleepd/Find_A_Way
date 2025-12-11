@@ -8,6 +8,8 @@ public class UILootDialog : MonoBehaviour
     private ItemContainer _currentContainer;
 
     public ItemContainer CurrentContainer => _currentContainer;
+    public event System.Action<ItemContainer> Shown;
+    public event System.Action<ItemContainer> Hidden;
 
     void Awake()
     {
@@ -30,14 +32,25 @@ public class UILootDialog : MonoBehaviour
         {
             lootsContainerPanel.SetActive(true);
         }
+
+        if (container != null)
+        {
+            Shown?.Invoke(container);
+        }
     }
 
     public void Hide()
     {
+        var closingContainer = _currentContainer;
         _currentContainer = null;
         if (lootsContainerPanel != null)
         {
             lootsContainerPanel.SetActive(false);
+        }
+
+        if (closingContainer != null)
+        {
+            Hidden?.Invoke(closingContainer);
         }
     }
 

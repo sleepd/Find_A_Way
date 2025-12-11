@@ -12,6 +12,7 @@ public class UIInteractionPoint : MonoBehaviour
     private RectTransform _rectTransform;
     private Camera _camera;
     private IInteractable _target;
+    private bool _keyTipForceHidden;
 
     public IInteractable Target => _target;
 
@@ -70,7 +71,8 @@ public class UIInteractionPoint : MonoBehaviour
         bool withinInteract = interactRadius <= 0f
             ? distance <= focusRadius
             : distance <= interactRadius;
-        SetInteractiveKeyTipVisible(withinInteract);
+        bool shouldShow = withinInteract && !_keyTipForceHidden;
+        SetInteractiveKeyTipVisible(shouldShow);
     }
 
     private void SetVisible(bool visible)
@@ -86,6 +88,15 @@ public class UIInteractionPoint : MonoBehaviour
         }
 
         if (!visible)
+        {
+            SetInteractiveKeyTipVisible(false);
+        }
+    }
+
+    public void SetKeyTipForceHidden(bool forceHide)
+    {
+        _keyTipForceHidden = forceHide;
+        if (forceHide)
         {
             SetInteractiveKeyTipVisible(false);
         }

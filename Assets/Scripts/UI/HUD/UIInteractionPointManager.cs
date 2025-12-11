@@ -7,6 +7,7 @@ public class UIInteractionPointManager : MonoBehaviour
     [SerializeField] private UIInteractionPoint pointPrefab;
     [SerializeField] private RectTransform container;
     [SerializeField] private Camera worldCamera;
+    [SerializeField] private UILootDialog lootDialog;
 
     private InteractionSensor _sensor;
     private Transform _playerTransform;
@@ -40,6 +41,17 @@ public class UIInteractionPointManager : MonoBehaviour
         }
         _playerTransform = playerController.transform;
 
+        if (lootDialog == null)
+        {
+            lootDialog = UnityEngine.Object.FindFirstObjectByType<UILootDialog>(UnityEngine.FindObjectsInactive.Include);
+        }
+
+        if (lootDialog != null)
+        {
+            lootDialog.Shown += HandleLootDialogShown;
+            lootDialog.Hidden += HandleLootDialogHidden;
+        }
+
         _sensor.InteractableEntered += HandleInteractableEntered;
         _sensor.InteractableExited += HandleInteractableExited;
         _sensor.CurrentChanged += HandleCurrentChanged;
@@ -54,6 +66,12 @@ public class UIInteractionPointManager : MonoBehaviour
             _sensor.InteractableExited -= HandleInteractableExited;
             _sensor.CurrentChanged -= HandleCurrentChanged;
             _sensor.FocusDistanceChanged -= HandleFocusDistanceChanged;
+        }
+
+        if (lootDialog != null)
+        {
+            lootDialog.Shown -= HandleLootDialogShown;
+            lootDialog.Hidden -= HandleLootDialogHidden;
         }
 
         foreach (var point in _points.Values)
@@ -102,6 +120,33 @@ public class UIInteractionPointManager : MonoBehaviour
     private void HandleCurrentChanged(IInteractable current)
     {
         // Points all look the same; nothing to update.
+    }
+
+    private void HandleLootDialogShown(ItemContainer container)
+    {
+        if (container == null)
+        {
+            return;
+        }
+
+        if (_points.TryGetValue(container, out var point))
+        {
+            point.SetKeyTipForceHidden(true);
+        }
+    }
+
+    private void HandleLootDialogHidden(ItemContainer container)
+    {
+        if (container == null)
+        {
+            return;
+        }
+
+        if (_points.TryGetValue(container, out var point))
+        {
+            point.SetKeyTipForceHidden(false);
+            UpdatePointDistance(point, container);
+        }
     }
 
     private void HandleFocusDistanceChanged(IInteractable interactable, float distance)

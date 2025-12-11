@@ -2484,6 +2484,7 @@ MonoBehaviour:
   pointPrefab: {fileID: 2833833592404616750, guid: 1919110614a541d438da9fe57d1814f7, type: 3}
   container: {fileID: 0}
   worldCamera: {fileID: 0}
+  lootDialog: {fileID: 0}
 --- !u!1 &713970243
 GameObject:
   m_ObjectHideFlags: 0
@@ -4981,9 +4982,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1669283082}
-  - {fileID: 993970338}
   - {fileID: 755328527}
   - {fileID: 23466449}
+  - {fileID: 993970338}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6927,10 +6928,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 1986266783012416407, guid: beb617367c9cbf5429e67a94428da35c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 2970555288877843390, guid: beb617367c9cbf5429e67a94428da35c, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 961739752}
     - target: {fileID: 8836022869521737851, guid: beb617367c9cbf5429e67a94428da35c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
