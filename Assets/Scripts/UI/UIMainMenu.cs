@@ -60,8 +60,13 @@ public class UIMainMenu : MonoBehaviour
         _quitButton.Select();
     }
 
-    public void StartGame()
+    public void ContinueGame()
     {
         SceneManager.LoadScene("Level_Gym");
+    }
+
+    public void NewGame()
+    {
+        SceneManager.LoadScene("IntroSequence");
     }
 }

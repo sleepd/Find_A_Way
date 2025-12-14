@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 9c9ab696afcc4464b80db3ceb3c00cda
   - enabled: 1
+    path: Assets/Scenes/IntroSequence.unity
+    guid: f995f0e6097e11641a06578ee9390375
+  - enabled: 1
     path: Assets/Scenes/Level_Gym.unity
     guid: a9e8aee9de2e1644d870710800408e51
   m_configObjects:
